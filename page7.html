@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vowel Counter</title>
     <link rel="stylesheet" href="style.css">
-     <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -80,7 +80,7 @@
             margin-bottom: 10px;
             font-size: 16px;
         }
-        input[type="text"] {
+        textarea {
             padding: 8px;
             font-size: 16px;
             width: 100%;
@@ -117,7 +117,6 @@
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
-            
         </ul>
     </nav>
 
@@ -147,14 +146,16 @@
             const text = document.getElementById('textInput').value.toLowerCase();
             const vowels = 'aeiou';
             let counts = {a: 0, e: 0, i: 0, o: 0, u: 0};
+            let totalVowels = 0;
 
             for (let char of text) {
                 if (vowels.includes(char)) {
                     counts[char]++;
+                    totalVowels++;
                 }
             }
 
-            const resultText = `A: ${counts.a}, E: ${counts.e}, I: ${counts.i}, O: ${counts.o}, U: ${counts.u}`;
+            const resultText = `A: ${counts.a}, E: ${counts.e}, I: ${counts.i}, O: ${counts.o}, U: ${counts.u}, Total: ${totalVowels}`;
             document.getElementById('result').innerText = resultText;
         }
     </script>
