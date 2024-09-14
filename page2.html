@@ -131,22 +131,18 @@
     <section id="confidenceInterval" class="calculator">
         <h2>Confidence Interval Calculator for Proportions</h2>
         <form id="ciForm">
-           
             <p>Number of Successes (\(x\)): <input type="text" id="ci_successes" size="10" placeholder="Optional"></p>
             <p>Sample Size (\(n\)): <input type="text" id="ci_sample_size" size="10" placeholder="Optional"></p>
             <p>Confidence Level (%): <input type="text" id="ci_confidence_level" size="10" placeholder="e.g., 95" required></p>
             <p>Sample Proportion (\(\hat{p}\)) (if x is not provided): <input type="text" id="ci_sample_proportion" size="10" placeholder="Optional"></p>
             <button type="button" onclick="calculateProportionCI()">Calculate Confidence Interval</button>
         </form>
-        <p id="ci_z_score_result"></p>
-        <p id="ci_margin_error_result"></p>
         <p id="ci_confidence_interval_result"></p>
     </section>
 
     <section id="sampleSize" class="calculator">
         <h2>Sample Size Calculator for Proportions</h2>
         <form id="sizeForm">
-            
             <p>Margin of Error (%): <input type="text" id="size_margin_of_error" size="10" required></p>
             <p>Confidence Level (%): <input type="text" id="size_confidence_level" size="10" placeholder="e.g., 95" required></p>
             <p>Sample Proportion (\(\hat{p}\)) (%): <input type="text" id="size_sample_proportion" size="10" required></p>
@@ -180,10 +176,7 @@
             return;
         }
 
-        var zScore = jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1);
-        zScore = parseFloat(zScore.toFixed(4));
-
-        var marginOfError = zScore * Math.sqrt((p_hat * (1 - p_hat)) / sampleSize);
+        var marginOfError = jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1) * Math.sqrt((p_hat * (1 - p_hat)) / sampleSize);
         marginOfError = parseFloat(marginOfError.toFixed(4));
 
         var lowerBound = p_hat - marginOfError;
@@ -191,8 +184,6 @@
         lowerBound = parseFloat(lowerBound.toFixed(4));
         upperBound = parseFloat(upperBound.toFixed(4));
 
-        document.getElementById("ci_z_score_result").innerHTML = "The z-score is: " + zScore;
-        document.getElementById("ci_margin_error_result").innerHTML = "The margin of error is: " + marginOfError;
         document.getElementById("ci_confidence_interval_result").innerHTML = "The confidence interval for the proportion is [" + lowerBound + ", " + upperBound + "]";
     }
 
@@ -206,10 +197,7 @@
             return;
         }
 
-        var zScore = jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1);
-        zScore = parseFloat(zScore.toFixed(4));
-
-        var numerator = Math.pow(zScore, 2) * sampleProportionPercent * (1 - sampleProportionPercent);
+        var numerator = Math.pow(jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1), 2) * sampleProportionPercent * (1 - sampleProportionPercent);
         var sampleSize = Math.ceil(numerator / Math.pow(marginOfErrorPercent, 2));
 
         document.getElementById("size_sample_size_result").innerHTML = "The required sample size is: " + sampleSize;
