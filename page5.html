@@ -5,29 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis Testing on Two Samples (Proportions)</title>
     <link rel="stylesheet" href="style.css">
-    <style>
+   <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: flex;
         }
         header {
             background-color: #6a0dad; /* Purple */
             color: #fff;
             padding: 10px 0;
             text-align: center;
-            flex: 1;
+            position: fixed;
             width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure it is above other content */
+            border-bottom: 5px solid #b8860b; /* Dark Goldenrod border */
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
         }
         nav {
-            background-color: #b8860b; /* Dark golden color */
+            background-color: #800080; /* Darker purple */
             padding: 10px;
+            text-align: center;
             position: fixed;
-            width: 200px; /* Wider width for the sidebar */
-            height: 100vh; /* Full height of the viewport */
-            overflow: auto; /* Add scroll if necessary */
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for better visual separation */
+            width: 100%;
+            top: 50px; /* Below the header */
+            left: 0;
+            z-index: 999; /* Ensure it is above main content but below header */
+            border-top: 5px solid #b8860b; /* Dark Goldenrod border */
         }
         nav ul {
             list-style: none;
@@ -35,42 +45,71 @@
             margin: 0;
         }
         nav ul li {
-            margin-bottom: 10px;
+            display: inline;
+            margin-right: 15px;
         }
         nav a {
             color: #fff;
             text-decoration: none;
             font-weight: bold;
-            font-size: 14px; /* Smaller font size */
-            display: block;
-            padding: 8px;
-            border-radius: 4px;
+            font-size: 16px;
         }
         nav a:hover {
-            background-color: #6a0dad; /* Lighter purple */
+            text-decoration: underline;
         }
         main {
-            margin-left: 220px; /* Adjust based on the width of the nav */
             padding: 15px;
             max-width: 900px;
-            flex: 1;
-            background-color: #f3e6f5; /* Light purple background */
-            text-align: center; /* Center text in the middle of the page */
+            margin: 0 auto;
+            padding-top: 80px; /* Space for fixed header and nav */
         }
-        h1 {
+        section {
+            margin-bottom: 12px;
+        }
+        .calculator {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
             margin-top: 0;
-            font-size: 24px;
+            font-size: 22px;
+        }
+        p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #800080;
         }
         footer {
             background-color: #6a0dad;
             color: #fff;
-            padding: 10px;
+            padding: 2px; /* Reduced padding */
             text-align: center;
             font-size: 12px;
             position: fixed;
-            width: calc(100% - 200px); /* Adjust based on the width of the nav */
+            width: 100%;
             bottom: 0;
-            margin-left: 200px; /* Adjust based on the width of the nav */
+            border-top: 5px solid #b8860b; /* Dark Goldenrod border */
         }
     </style>
 </head>
