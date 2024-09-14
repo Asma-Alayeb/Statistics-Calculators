@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vowel Counter</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        header {
+            background-color: #6a0dad; /* Purple */
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            flex: 1;
+            width: 100%;
+        }
+        nav {
+            background-color: #b8860b; /* Dark golden color */
+            padding: 10px;
+            position: fixed;
+            width: 200px; /* Wider width for the sidebar */
+            height: 100vh; /* Full height of the viewport */
+            overflow: auto; /* Add scroll if necessary */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for better visual separation */
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            margin-bottom: 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px; /* Smaller font size */
+            display: block;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        nav a:hover {
+            background-color: #6a0dad; /* Lighter purple */
+        }
+        main {
+            margin-left: 220px; /* Adjust based on the width of the nav */
+            padding: 15px;
+            max-width: 900px;
+            flex: 1;
+            background-color: #f3e6f5; /* Light purple background */
+            text-align: center; /* Center text in the middle of the page */
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        p.description {
+            font-size: 18px; /* Adjust font size for description */
+            font-family: Verdana, sans-serif; /* Verdana font */
+        }
+        footer {
+            background-color: #6a0dad;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            position: fixed;
+            width: calc(100% - 200px); /* Adjust based on the width of the nav */
+            bottom: 0;
+            margin-left: 200px; /* Adjust based on the width of the nav */
+        }
+        .container {
+            margin: 20px;
+        }
+        .result {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="page1.html">Confidence Intervals For The Mean/Sample Size</a></li>
+            <li><a href="page2.html">Confidence Intervals for a Proportion/Sample Size</a></li>
+            <li><a href="page3.html">Hypothesis Testing for Means</a></li>
+            <li><a href="page4.html">Hypothesis Testing For Proportions</a></li>
+            <li><a href="page5.html">Hypothesis Testing on Two Samples (Proportions)</a></li>
+            <li><a href="page6.html">Hypothesis Testing on Two Samples (Means)</a></li>
+            <li><a href="vowel-counter.html">Vowel Counter</a></li> <!-- New link -->
+        </ul>
+    </nav>
+
+    <header>
+        <h1>CCD's Statistics Calculators</h1>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Vowel Counter</h1>
+            <p class="description">
+                Enter text below to count the number of vowels (a, e, i, o, u) in it.
+            </p>
+            <textarea id="textInput" rows="5" cols="40" placeholder="Enter your text here..."></textarea>
+            <br><br>
+            <button onclick="countVowels()">Count Vowels</button>
+            <p id="result" class="result"></p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Asma S. Alayeb</p>
+    </footer>
+
+    <script>
+        function countVowels() {
+            const text = document.getElementById('textInput').value.toLowerCase();
+            const vowels = 'aeiou';
+            let counts = {a: 0, e: 0, i: 0, o: 0, u: 0};
+
+            for (let char of text) {
+                if (vowels.includes(char)) {
+                    counts[char]++;
+                }
+            }
+
+            const resultText = `A: ${counts.a}, E: ${counts.e}, I: ${counts.i}, O: ${counts.o}, U: ${counts.u}`;
+            document.getElementById('result').innerText = resultText;
+        }
+    </script>
+</body>
+</html>
