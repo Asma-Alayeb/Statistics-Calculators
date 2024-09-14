@@ -71,6 +71,7 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center the content */
         }
         h2 {
             margin-top: 0;
@@ -92,9 +93,10 @@
         button:hover {
             background-color: #800080;
         }
-        .dice {
-            font-size: 20px;
-            margin-top: 15px;
+        .dice img {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
         }
         footer {
             background-color: #6a0dad;
@@ -117,7 +119,6 @@
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
-           
         </ul>
     </nav>
 
@@ -138,8 +139,28 @@
         function rollDice() {
             const die1 = Math.floor(Math.random() * 6) + 1;
             const die2 = Math.floor(Math.random() * 6) + 1;
-            const results = `Die 1: ${die1}, Die 2: ${die2}`;
-            document.getElementById('diceResults').innerText = results;
+
+            // Define the dice image paths
+            const diceImages = {
+                1: 'images/dice1.png',
+                2: 'images/dice2.png',
+                3: 'images/dice3.png',
+                4: 'images/dice4.png',
+                5: 'images/dice5.png',
+                6: 'images/dice6.png'
+            };
+
+            // Get image paths for the rolled dice
+            const die1Image = diceImages[die1];
+            const die2Image = diceImages[die2];
+
+            // Update the dice results display
+            document.getElementById('diceResults').innerHTML = `
+                <img src="${die1Image}" alt="Die 1">
+                <img src="${die2Image}" alt="Die 2">
+                <br><br>
+                Die 1: ${die1}, Die 2: ${die2}
+            `;
         }
     </script>
 </body>
