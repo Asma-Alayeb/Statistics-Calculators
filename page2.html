@@ -131,10 +131,10 @@
     <section id="confidenceInterval" class="calculator">
         <h2>Confidence Interval Calculator for Proportions</h2>
         <form id="ciForm">
-            <p>Number of Successes (\(x\)): <input type="text" id="ci_successes" size="10" placeholder="Optional if (\(\hat{p}\)) is provided"></p>
+            <p>Number of Successes (\(x\)): <input type="text" id="ci_successes" size="10" placeholder="Optional if "(\(\hat{p}\))" is provided"></p>
             <p>Sample Size (\(n\)): <input type="text" id="ci_sample_size" size="10"></p>
             <p>Confidence Level (%): <input type="text" id="ci_confidence_level" size="10" placeholder="e.g., 95" required></p>
-            <p>Sample Proportion (\(\hat{p}\)) (if \(x\) is not provided): <input type="text" id="ci_sample_proportion" size="10" placeholder="Optional if \(x\) is not provided"></p>
+            <p>Sample Proportion (\(\hat{p}\)) (if \(x\) is not provided): <input type="text" id="ci_sample_proportion" size="10" placeholder="Optional if "\(x\)" is not provided"></p>
             <button type="button" onclick="calculateProportionCI()">Calculate Confidence Interval</button>
         </form>
         <p id="ci_confidence_interval_result"></p>
