@@ -140,16 +140,16 @@
             </select>
         </p>
         <div id="successesInput">
-            <p>Number of Successes in Sample 1 (\(x1\)): <input type="text" id="x1"></p>
-            <p>Sample Size 1 (\(n1\)): <input type="text" id="n1" required></p>
-            <p>Number of Successes in Sample 2 (\(x2\)): <input type="text" id="x2"></p>
-            <p>Sample Size 2 (\(n2\)): <input type="text" id="n2" required></p>
+            <p>Number of Successes in Sample 1 (\(x_1\)): <input type="text" id="x1"></p>
+            <p>Sample Size 1 (\(n_1\)): <input type="text" id="n1" required></p>
+            <p>Number of Successes in Sample 2 (\(x_2\)): <input type="text" id="x2"></p>
+            <p>Sample Size 2 (\(n_2\)): <input type="text" id="n2" required></p>
         </div>
         <div id="proportionsInput" style="display: none;">
-            <p>Sample Proportion 1 (\(p1\)): <input type="text" id="p1"></p>
-            <p>Sample Size 1 (\(n1\)): <input type="text" id="n1_proportion" required></p>
-            <p>Sample Proportion 2 (\(p2\)): <input type="text" id="p2"></p>
-            <p>Sample Size 2 (\(n2\)): <input type="text" id="n2_proportion" required></p>
+            <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="p1"></p>
+            <p>Sample Size 1 (\(n_1\)): <input type="text" id="n1_proportion" required></p>
+            <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="p2"></p>
+            <p>Sample Size 2 (\(n_2\)): <input type="text" id="n2_proportion" required></p>
         </div>
         <p>Alpha (\(\alpha)\): <input type="text" id="alpha" required></p>
         <p>Test Type: 
@@ -171,10 +171,10 @@
 <section id="confidenceInterval" class="calculator">
     <h2>Confidence Interval Calculator</h2>
     <form id="confidenceIntervalForm">
-        <p>Sample Proportion 1 (\(p1\)): <input type="text" id="ci_p1" required></p>
-        <p>Sample Size 1 (\(n1\)): <input type="text" id="ci_n1" required></p>
-        <p>Sample Proportion 2 (\(p2\)): <input type="text" id="ci_p2" required></p>
-        <p>Sample Size 2 (n2): <input type="text" id="ci_n2" required></p>
+        <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="ci_p1" required></p>
+        <p>Sample Size 1 (\(n_1\)): <input type="text" id="ci_n1" required></p>
+        <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="ci_p2" required></p>
+        <p>Sample Size 2 (n_2): <input type="text" id="ci_n2" required></p>
         <p>Confidence Level (\(\%)\): <input type="text" id="ci_confidence_level" required></p>
         <button type="button" onclick="calculateConfidenceInterval()">Calculate Confidence Interval</button>
     </form>
@@ -186,8 +186,8 @@
 <section id="sampleSizeCalculator" class="calculator">
     <h2>Sample Size Calculator</h2>
     <form id="sampleSizeForm">
-        <p>Sample Proportion 1 (\(p1\)): <input type="text" id="ss_p1" required></p>
-        <p>Sample Proportion 2 (\(p2\)): <input type="text" id="ss_p2" required></p>
+        <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="ss_p1" required></p>
+        <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="ss_p2" required></p>
         <p>Confidence Level (\(\%)\): <input type="text" id="ss_confidence_level" required></p>
         <p>Margin of Error (\(\%)\): <input type="text" id="ss_margin_error" required></p>
         <p><button type="button" onclick="calculateSampleSize()">Calculate Sample Size</button></p>
