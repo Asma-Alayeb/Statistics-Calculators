@@ -112,6 +112,9 @@
             border-top: 5px solid #b8860b; /* Dark Goldenrod border */
         }
     </style>
+     <!-- MathJax for rendering LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -131,7 +134,7 @@
 <section id="twoMeansTest" class="calculator">
     <h2>Two Population Means Hypothesis Test</h2>
     <form id="twoMeansForm">
-        <p>Sample Mean 1 (x̄1): <input type="text" id="mean1" required></p>
+        <p>Sample Mean 1 (\(x̄1\)): <input type="text" id="mean1" required></p>
         <p>Sample Standard Deviation 1 (s1): <input type="text" id="stddev1" required></p>
         <p>Sample Size 1 (n1): <input type="text" id="n1" required></p>
         <p>Sample Mean 2 (x̄2): <input type="text" id="mean2" required></p>
