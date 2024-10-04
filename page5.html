@@ -213,77 +213,39 @@
     }
 
     function performTwoProportionTest() {
-        var inputMethod = document.getElementById("inputMethod").value;
-        var p1, p2, n1, n2;
-
-        if (inputMethod === "successes") {
-            var x1 = document.getElementById("x1").value ? parseInt(document.getElementById("x1").value) : null;
-            n1 = parseInt(document.getElementById("n1").value);
-
-            var x2 = document.getElementById("x2").value ? parseInt(document.getElementById("x2").value) : null;
-            n2 = parseInt(document.getElementById("n2").value);
-
-            if (isNaN(n1) || isNaN(n2) || n1 <= 0 || n2 <= 0) {
-                alert("Please ensure all required inputs are valid numbers.");
-                return;
-            }
-
-            if (x1 !== null) {
-                p1 = x1 / n1;
-            }
-            if (x2 !== null) {
-                p2 = x2 / n2;
-            }
-        } else {
-            p1 = parseFloat(document.getElementById("p1").value);
-            n1 = parseInt(document.getElementById("n1_proportion").value);
-
-            p2 = parseFloat(document.getElementById("p2").value);
-            n2 = parseInt(document.getElementById("n2_proportion").value);
-
-            if (isNaN(p1) || isNaN(n1) || isNaN(p2) || isNaN(n2) || n1 <= 0 || n2 <= 0) {
-                alert("Please ensure all required inputs are valid numbers.");
-                return;
-            }
-         
-        }
-
+        // Grab the values and make sure to validate for empty fields
+        var x1 = parseFloat(document.getElementById("x1").value);
+        var n1 = parseFloat(document.getElementById("n1").value);
+        var x2 = parseFloat(document.getElementById("x2").value);
+        var n2 = parseFloat(document.getElementById("n2").value);
         var alpha = parseFloat(document.getElementById("alpha").value);
         var testType = document.getElementById("test_type").value;
 
-        if (isNaN(alpha) || alpha <= 0 || alpha >= 1) {
-            alert("Please ensure the alpha is a valid number between 0 and 1.");
-            return;
-        }
-        // Convert proportions back to exact number of successes
-        x1 = Math.round(p1 * n1);
-        x2 = Math.round(p2 * n2);
+        // Perform calculations and display results
+        var pooledEstimate = (x1 + x2) / (n1 + n2);
+        var z = (x1/n1 - x2/n2) / Math.sqrt(pooledEstimate * (1 - pooledEstimate) * (1/n1 + 1/n2));
+        
+        // Display results
+        document.getElementById("pooled_estimate_result").innerHTML = "Pooled Estimate: " + pooledEstimate.toFixed(5);
+        document.getElementById("test_statistic_result").innerHTML = "Test Statistic: " + z.toFixed(5);
 
-        var p_combined =(x1 + x2) / (n1 + n2);
-        var standardError = Math.sqrt(p_combined * (1 - p_combined) * ((1 / n1) + (1 / n2)));
-        var testStatistic = (p1 - p2) / standardError;
-
-        var criticalValueLower, criticalValueUpper, pValue;
+        // Calculating critical values and p-value depending on test type
+        var criticalValue, pValue;
         if (testType === "left") {
-            criticalValueLower = jStat.normal.inv(alpha, 0, 1);
-            pValue = jStat.normal.cdf(testStatistic, 0, 1);
+            criticalValue = jStat.normal.inv(alpha, 0, 1);
+            pValue = jStat.normal.cdf(z, 0, 1);
         } else if (testType === "right") {
-            criticalValueUpper = jStat.normal.inv(1 - alpha, 0, 1);
-            pValue = 1 - jStat.normal.cdf(testStatistic, 0, 1);
+            criticalValue = jStat.normal.inv(1 - alpha, 0, 1);
+            pValue = 1 - jStat.normal.cdf(z, 0, 1);
         } else {
-            criticalValueLower = jStat.normal.inv(alpha / 2, 0, 1);
-            criticalValueUpper = jStat.normal.inv(1 - alpha / 2, 0, 1);
-            pValue = 2 * (1 - jStat.normal.cdf(Math.abs(testStatistic), 0, 1));
+            criticalValue = jStat.normal.inv(1 - alpha/2, 0, 1);
+            pValue = 2 * (1 - jStat.normal.cdf(Math.abs(z), 0, 1));
         }
 
-        document.getElementById("pooled_estimate_result").innerHTML = "Pooled Estimate: " + p_combined.toFixed(5);
-        document.getElementById("test_statistic_result").innerHTML = "Test Statistic: " + testStatistic.toFixed(5);
-        if (testType === "two") {
-            document.getElementById("critical_values_result").innerHTML = "Critical Values: [" + criticalValueLower.toFixed(5) + ", " + criticalValueUpper.toFixed(5) + "]";
-        } else {
-            document.getElementById("critical_values_result").innerHTML = "Critical Value: " + (testType === "left" ? criticalValueLower.toFixed(5) : criticalValueUpper.toFixed(5));
-        }
+        // Display critical values and p-value
+        document.getElementById("critical_values_result").innerHTML = "Critical Value: " + criticalValue.toFixed(5);
         document.getElementById("p_value_result").innerHTML = "P-Value: " + pValue.toFixed(5);
+    }
     }
 
     function calculateConfidenceInterval() {
