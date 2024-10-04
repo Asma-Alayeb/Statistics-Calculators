@@ -262,7 +262,7 @@
 
         var p_combined =(x1 + x2) / (n1 + n2);
         var standardError = Math.sqrt(p_combined * (1 - p_combined) * ((1 / n1) + (1 / n2)));
-        var testStatistic = ((x1/n1) - (x2/n2)) / standardError;
+        var testStatistic = (p1 - p2) / standardError;
 
         var criticalValueLower, criticalValueUpper, pValue;
         if (testType === "left") {
