@@ -245,6 +245,8 @@
                 alert("Please ensure all required inputs are valid numbers.");
                 return;
             }
+            p1 = x1 / n1;
+            p2 = x2 / n2;
         }
 
         var alpha = parseFloat(document.getElementById("alpha").value);
@@ -254,10 +256,13 @@
             alert("Please ensure the alpha is a valid number between 0 and 1.");
             return;
         }
+        // Convert proportions back to exact number of successes
+            x1 = Math.round(p1 * n1);
+            x2 = Math.round(p2 * n2);
 
-        var p_combined = ((p1 * n1) + (p2 * n2)) / (n1 + n2);
+        var p_combined =(x1 + x2) / (n1 + n2);
         var standardError = Math.sqrt(p_combined * (1 - p_combined) * ((1 / n1) + (1 / n2)));
-        var testStatistic = (p1 - p2) / standardError;
+        var testStatistic = ((x1/n1) - (x2/n2)) / standardError;
 
         var criticalValueLower, criticalValueUpper, pValue;
         if (testType === "left") {
