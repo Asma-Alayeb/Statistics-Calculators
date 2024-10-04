@@ -132,7 +132,7 @@
 
 <section id="twoProportionTest" class="calculator">
     <h2>Two Population Proportions Hypothesis Test</h2>
-    <form id="twoProportionForm">
+    <form id="twoProportionForm" onsubmit="event.preventDefault(); performTwoProportionTest();">
         <p>Input Method: 
             <select id="inputMethod" onchange="toggleInputFields()">
                 <option value="successes">Number of Successes</option>
@@ -140,15 +140,15 @@
             </select>
         </p>
         <div id="successesInput">
-            <p>Number of Successes in Sample 1 (\(x_1\)): <input type="text" id="x1"></p>
+            <p>Number of Successes in Sample 1 (\(x_1\)): <input type="text" id="x1" required></p>
             <p>Sample Size 1 (\(n_1\)): <input type="text" id="n1" required></p>
-            <p>Number of Successes in Sample 2 (\(x_2\)): <input type="text" id="x2"></p>
+            <p>Number of Successes in Sample 2 (\(x_2\)): <input type="text" id="x2" required></p>
             <p>Sample Size 2 (\(n_2\)): <input type="text" id="n2" required></p>
         </div>
         <div id="proportionsInput" style="display: none;">
-            <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="p1"></p>
+            <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="p1" required></p>
             <p>Sample Size 1 (\(n_1\)): <input type="text" id="n1_proportion" required></p>
-            <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="p2"></p>
+            <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="p2" required></p>
             <p>Sample Size 2 (\(n_2\)): <input type="text" id="n2_proportion" required></p>
         </div>
         <p>Alpha (\(\alpha\)): <input type="text" id="alpha" required></p>
@@ -159,7 +159,7 @@
                 <option value="two">Two Tail Test</option>
             </select>
         </p>
-        <p><button type="button" onclick="performTwoProportionTest()">Perform Hypothesis Test</button></p>
+        <p><button type="submit">Perform Hypothesis Test</button></p>
     </form>
 
     <p id="pooled_estimate_result"></p>
@@ -170,13 +170,13 @@
 
 <section id="confidenceInterval" class="calculator">
     <h2>Confidence Interval Calculator</h2>
-    <form id="confidenceIntervalForm">
+    <form id="confidenceIntervalForm" onsubmit="event.preventDefault(); calculateConfidenceInterval();">
         <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="ci_p1" required></p>
         <p>Sample Size 1 (\(n_1\)): <input type="text" id="ci_n1" required></p>
         <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="ci_p2" required></p>
         <p>Sample Size 2 (\(n_2\)): <input type="text" id="ci_n2" required></p>
         <p>Confidence Level (\(\%\)): <input type="text" id="ci_confidence_level" required></p>
-        <button type="button" onclick="calculateConfidenceInterval()">Calculate Confidence Interval</button>
+        <button type="submit">Calculate Confidence Interval</button>
     </form>
 
     <p id="ci_result"></p>
@@ -185,12 +185,12 @@
 
 <section id="sampleSizeCalculator" class="calculator">
     <h2>Sample Size Calculator</h2>
-    <form id="sampleSizeForm">
+    <form id="sampleSizeForm" onsubmit="event.preventDefault(); calculateSampleSize();">
         <p>Sample Proportion 1 (\(p_1\)): <input type="text" id="ss_p1" required></p>
         <p>Sample Proportion 2 (\(p_2\)): <input type="text" id="ss_p2" required></p>
         <p>Confidence Level (\(\%\)): <input type="text" id="ss_confidence_level" required></p>
         <p>Margin of Error (\(\%\)): <input type="text" id="ss_margin_error" required></p>
-        <p><button type="button" onclick="calculateSampleSize()">Calculate Sample Size</button></p>
+        <button type="submit">Calculate Sample Size</button>
     </form>
 
     <p id="sample_size_result"></p>
@@ -213,10 +213,11 @@
     }
 
     function performTwoProportionTest() {
-        // Grab the values and make sure to validate for empty inputs
         var inputMethod = document.getElementById("inputMethod").value;
         var alpha = parseFloat(document.getElementById("alpha").value);
-        var n1, n2, x1, x2, p1, p2;
+        var testType = document.getElementById("test_type").value;
+
+        let x1, n1, x2, n2, p1, n1_proportion, p2, n2_proportion;
 
         if (inputMethod === "successes") {
             x1 = parseFloat(document.getElementById("x1").value);
@@ -230,41 +231,26 @@
             n1 = parseFloat(document.getElementById("n1_proportion").value);
             p2 = parseFloat(document.getElementById("p2").value);
             n2 = parseFloat(document.getElementById("n2_proportion").value);
-            x1 = p1 * n1;
-            x2 = p2 * n2;
         }
 
-        var p_hat = (x1 + x2) / (n1 + n2); // pooled proportion
-        var q_hat = 1 - p_hat; // pooled q
-        var se = Math.sqrt(p_hat * q_hat * (1/n1 + 1/n2)); // standard error
-
-        var z = (p1 - p2) / se; // test statistic
-
-        // Find critical values
-        var critical_value;
-        if (document.getElementById("test_type").value === "left") {
-            critical_value = jstat.normal.inv(alpha, 0, 1);
-        } else if (document.getElementById("test_type").value === "right") {
-            critical_value = jstat.normal.inv(1 - alpha, 0, 1);
+        var pooledEstimate = (x1 + x2) / (n1 + n2);
+        var testStatistic = (p1 - p2) / Math.sqrt(pooledEstimate * (1 - pooledEstimate) * (1 / n1 + 1 / n2));
+        
+        var zCritical;
+        if (testType === "left") {
+            zCritical = jStat.normal.inv(alpha, 0, 1);
+        } else if (testType === "right") {
+            zCritical = jStat.normal.inv(1 - alpha, 0, 1);
         } else {
-            critical_value = jstat.normal.inv(1 - alpha / 2, 0, 1);
+            zCritical = jStat.normal.inv(1 - alpha / 2, 0, 1);
         }
 
-        // Calculate p-value
-        var p_value;
-        if (document.getElementById("test_type").value === "two") {
-            p_value = 2 * (1 - jstat.normal.cdf(Math.abs(z), 0, 1));
-        } else if (document.getElementById("test_type").value === "right") {
-            p_value = 1 - jstat.normal.cdf(z, 0, 1);
-        } else {
-            p_value = jstat.normal.cdf(z, 0, 1);
-        }
+        var pValue = (testType === "two") ? 2 * (1 - jStat.normal.cdf(Math.abs(testStatistic), 0, 1)) : jStat.normal.cdf(testStatistic, 0, 1);
 
-        // Display results
-        document.getElementById("pooled_estimate_result").innerText = "Pooled Proportion: " + p_hat.toFixed(5);
-        document.getElementById("test_statistic_result").innerText = "Test Statistic (z): " + z.toFixed(5);
-        document.getElementById("critical_values_result").innerText = "Critical Value: " + critical_value.toFixed(5);
-        document.getElementById("p_value_result").innerText = "P-Value: " + p_value.toFixed(5);
+        document.getElementById("pooled_estimate_result").innerText = `Pooled Estimate: ${pooledEstimate.toFixed(5)}`;
+        document.getElementById("test_statistic_result").innerText = `Test Statistic: ${testStatistic.toFixed(5)}`;
+        document.getElementById("critical_values_result").innerText = `Critical Value: ${zCritical.toFixed(5)}`;
+        document.getElementById("p_value_result").innerText = `P-Value: ${pValue.toFixed(5)}`;
     }
 
     function calculateConfidenceInterval() {
@@ -272,32 +258,31 @@
         var n1 = parseFloat(document.getElementById("ci_n1").value);
         var p2 = parseFloat(document.getElementById("ci_p2").value);
         var n2 = parseFloat(document.getElementById("ci_n2").value);
-        var confidence_level = parseFloat(document.getElementById("ci_confidence_level").value) / 100;
+        var confidenceLevel = parseFloat(document.getElementById("ci_confidence_level").value) / 100;
 
-        var pooled_proportion = (p1 * n1 + p2 * n2) / (n1 + n2);
-        var z_score = jstat.normal.inv(1 - (1 - confidence_level) / 2, 0, 1);
-        var se = Math.sqrt(pooled_proportion * (1 - pooled_proportion) * (1/n1 + 1/n2));
+        var pooledEstimate = (p1 * n1 + p2 * n2) / (n1 + n2);
+        var zCritical = jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1);
+        var marginOfError = zCritical * Math.sqrt(pooledEstimate * (1 - pooledEstimate) * (1 / n1 + 1 / n2));
+        
+        var lowerBound = (p1 - p2) - marginOfError;
+        var upperBound = (p1 - p2) + marginOfError;
 
-        var margin_of_error = z_score * se;
-
-        var lower_bound = (p1 - p2) - margin_of_error;
-        var upper_bound = (p1 - p2) + margin_of_error;
-
-        document.getElementById("ci_result").innerText = "Confidence Interval: (" + lower_bound.toFixed(5) + ", " + upper_bound.toFixed(5) + ")";
-        document.getElementById("margin_error_result").innerText = "Margin of Error: " + margin_of_error.toFixed(5);
+        document.getElementById("ci_result").innerText = `Confidence Interval: (${lowerBound.toFixed(5)}, ${upperBound.toFixed(5)})`;
+        document.getElementById("margin_error_result").innerText = `Margin of Error: ${marginOfError.toFixed(5)}`;
     }
 
     function calculateSampleSize() {
         var p1 = parseFloat(document.getElementById("ss_p1").value);
         var p2 = parseFloat(document.getElementById("ss_p2").value);
-        var confidence_level = parseFloat(document.getElementById("ss_confidence_level").value) / 100;
-        var margin_error = parseFloat(document.getElementById("ss_margin_error").value) / 100;
+        var confidenceLevel = parseFloat(document.getElementById("ss_confidence_level").value) / 100;
+        var marginError = parseFloat(document.getElementById("ss_margin_error").value) / 100;
 
-        var z_score = jstat.normal.inv(1 - (1 - confidence_level) / 2, 0, 1);
-        var pooled_proportion = (p1 + p2) / 2;
-        var n = Math.ceil((Math.pow(z_score, 2) * pooled_proportion * (1 - pooled_proportion)) / Math.pow(margin_error, 2));
+        var pooledEstimate = (p1 + p2) / 2;
+        var zCritical = jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1);
 
-        document.getElementById("sample_size_result").innerText = "Required Sample Size: " + n;
+        var sampleSize = Math.ceil((Math.pow(zCritical, 2) * pooledEstimate * (1 - pooledEstimate)) / Math.pow(marginError, 2));
+
+        document.getElementById("sample_size_result").innerText = `Required Sample Size: ${sampleSize}`;
     }
 </script>
 
@@ -306,5 +291,6 @@
 <footer>
     <p>&copy; 2024 Asma S. Alayeb</p>
 </footer>
+
 </body>
 </html>
