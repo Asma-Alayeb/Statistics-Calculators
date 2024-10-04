@@ -213,52 +213,58 @@
     }
 
     function performTwoProportionTest() {
-        // Grab the values and make sure to validate for empty fields
-        var x1 = parseFloat(document.getElementById("x1").value) || 0;
-        var n1 = parseFloat(document.getElementById("n1").value);
-        var x2 = parseFloat(document.getElementById("x2").value) || 0;
-        var n2 = parseFloat(document.getElementById("n2").value);
-        
-        // Check if the user is using proportions
-        if (document.getElementById("inputMethod").value === "proportions") {
-            var p1 = parseFloat(document.getElementById("p1").value);
+        // Grab the values and make sure to validate for empty inputs
+        var inputMethod = document.getElementById("inputMethod").value;
+        var alpha = parseFloat(document.getElementById("alpha").value);
+        var n1, n2, x1, x2, p1, p2;
+
+        if (inputMethod === "successes") {
+            x1 = parseFloat(document.getElementById("x1").value);
+            n1 = parseFloat(document.getElementById("n1").value);
+            x2 = parseFloat(document.getElementById("x2").value);
+            n2 = parseFloat(document.getElementById("n2").value);
+            p1 = x1 / n1;
+            p2 = x2 / n2;
+        } else {
+            p1 = parseFloat(document.getElementById("p1").value);
             n1 = parseFloat(document.getElementById("n1_proportion").value);
-            var p2 = parseFloat(document.getElementById("p2").value);
+            p2 = parseFloat(document.getElementById("p2").value);
             n2 = parseFloat(document.getElementById("n2_proportion").value);
             x1 = p1 * n1;
             x2 = p2 * n2;
         }
 
-        var alpha = parseFloat(document.getElementById("alpha").value);
-        var testType = document.getElementById("test_type").value;
+        var p_hat = (x1 + x2) / (n1 + n2); // pooled proportion
+        var q_hat = 1 - p_hat; // pooled q
+        var se = Math.sqrt(p_hat * q_hat * (1/n1 + 1/n2)); // standard error
 
-        // Calculate pooled proportion
-        var pHat1 = x1 / n1;
-        var pHat2 = x2 / n2;
-        var pooled = (x1 + x2) / (n1 + n2);
+        var z = (p1 - p2) / se; // test statistic
 
-        // Calculate test statistic
-        var z = (pHat1 - pHat2) / Math.sqrt(pooled * (1 - pooled) * (1 / n1 + 1 / n2));
-        var criticalValue = 0;
-        var pValue = 0;
-
-        // Determine critical values and p-value based on test type
-        if (testType === "left") {
-            criticalValue = jstat.normal.inv(alpha, 0, 1);
-            pValue = jstat.normal.cdf(z, 0, 1);
-        } else if (testType === "right") {
-            criticalValue = jstat.normal.inv(1 - alpha, 0, 1);
-            pValue = 1 - jstat.normal.cdf(z, 0, 1);
+        // Find critical values
+        var critical_value;
+        if (document.getElementById("test_type").value === "left") {
+            critical_value = jstat.normal.inv(alpha, 0, 1);
+        } else if (document.getElementById("test_type").value === "right") {
+            critical_value = jstat.normal.inv(1 - alpha, 0, 1);
         } else {
-            criticalValue = jstat.normal.inv(1 - alpha / 2, 0, 1);
-            pValue = 2 * (1 - jstat.normal.cdf(Math.abs(z), 0, 1));
+            critical_value = jstat.normal.inv(1 - alpha / 2, 0, 1);
+        }
+
+        // Calculate p-value
+        var p_value;
+        if (document.getElementById("test_type").value === "two") {
+            p_value = 2 * (1 - jstat.normal.cdf(Math.abs(z), 0, 1));
+        } else if (document.getElementById("test_type").value === "right") {
+            p_value = 1 - jstat.normal.cdf(z, 0, 1);
+        } else {
+            p_value = jstat.normal.cdf(z, 0, 1);
         }
 
         // Display results
-        document.getElementById("pooled_estimate_result").innerHTML = `Pooled Estimate: ${pooled.toFixed(5)}`;
-        document.getElementById("test_statistic_result").innerHTML = `Test Statistic (z): ${z.toFixed(5)}`;
-        document.getElementById("critical_values_result").innerHTML = `Critical Value: ${criticalValue.toFixed(5)}`;
-        document.getElementById("p_value_result").innerHTML = `P-Value: ${pValue.toFixed(5)}`;
+        document.getElementById("pooled_estimate_result").innerText = "Pooled Proportion: " + p_hat.toFixed(5);
+        document.getElementById("test_statistic_result").innerText = "Test Statistic (z): " + z.toFixed(5);
+        document.getElementById("critical_values_result").innerText = "Critical Value: " + critical_value.toFixed(5);
+        document.getElementById("p_value_result").innerText = "P-Value: " + p_value.toFixed(5);
     }
 
     function calculateConfidenceInterval() {
@@ -266,30 +272,32 @@
         var n1 = parseFloat(document.getElementById("ci_n1").value);
         var p2 = parseFloat(document.getElementById("ci_p2").value);
         var n2 = parseFloat(document.getElementById("ci_n2").value);
-        var confidenceLevel = parseFloat(document.getElementById("ci_confidence_level").value) / 100;
+        var confidence_level = parseFloat(document.getElementById("ci_confidence_level").value) / 100;
 
-        var pooledEstimate = (p1 * n1 + p2 * n2) / (n1 + n2);
-        var zValue = jstat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1);
-        var marginOfError = zValue * Math.sqrt(pooledEstimate * (1 - pooledEstimate) * (1 / n1 + 1 / n2));
-        var lowerBound = (p1 - p2) - marginOfError;
-        var upperBound = (p1 - p2) + marginOfError;
+        var pooled_proportion = (p1 * n1 + p2 * n2) / (n1 + n2);
+        var z_score = jstat.normal.inv(1 - (1 - confidence_level) / 2, 0, 1);
+        var se = Math.sqrt(pooled_proportion * (1 - pooled_proportion) * (1/n1 + 1/n2));
 
-        // Display results
-        document.getElementById("ci_result").innerHTML = `Confidence Interval: [${lowerBound.toFixed(5)}, ${upperBound.toFixed(5)}]`;
-        document.getElementById("margin_error_result").innerHTML = `Margin of Error: ${marginOfError.toFixed(5)}`;
+        var margin_of_error = z_score * se;
+
+        var lower_bound = (p1 - p2) - margin_of_error;
+        var upper_bound = (p1 - p2) + margin_of_error;
+
+        document.getElementById("ci_result").innerText = "Confidence Interval: (" + lower_bound.toFixed(5) + ", " + upper_bound.toFixed(5) + ")";
+        document.getElementById("margin_error_result").innerText = "Margin of Error: " + margin_of_error.toFixed(5);
     }
 
     function calculateSampleSize() {
         var p1 = parseFloat(document.getElementById("ss_p1").value);
         var p2 = parseFloat(document.getElementById("ss_p2").value);
-        var confidenceLevel = parseFloat(document.getElementById("ss_confidence_level").value) / 100;
-        var marginOfError = parseFloat(document.getElementById("ss_margin_error").value) / 100;
+        var confidence_level = parseFloat(document.getElementById("ss_confidence_level").value) / 100;
+        var margin_error = parseFloat(document.getElementById("ss_margin_error").value) / 100;
 
-        var pooledProportion = (p1 + p2) / 2;
-        var zValue = jstat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1);
-        var sampleSize = Math.ceil((2 * (zValue ** 2) * pooledProportion * (1 - pooledProportion)) / (marginOfError ** 2));
+        var z_score = jstat.normal.inv(1 - (1 - confidence_level) / 2, 0, 1);
+        var pooled_proportion = (p1 + p2) / 2;
+        var n = Math.ceil((Math.pow(z_score, 2) * pooled_proportion * (1 - pooled_proportion)) / Math.pow(margin_error, 2));
 
-        document.getElementById("sample_size_result").innerHTML = `Required Sample Size: ${sampleSize}`;
+        document.getElementById("sample_size_result").innerText = "Required Sample Size: " + n;
     }
 </script>
 
