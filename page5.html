@@ -245,12 +245,12 @@
                 alert("Please ensure all required inputs are valid numbers.");
                 return;
             }
-            if (p1 !== null) {
-               x1 = Math.round(p1*n1);
-            }
-            if (p2 !== null) {
-               x2 = Math.round(p2*n2);
-            }
+         if (typeof p1 === "number" && !isNaN(p1) && p1 !== null) {
+    x1 = Math.round(p1 * n1);
+}
+if (typeof p2 === "number" && !isNaN(p2) && p2 !== null) {
+    x2 = Math.round(p2 * n2);
+}
         }
 
         var alpha = parseFloat(document.getElementById("alpha").value);
