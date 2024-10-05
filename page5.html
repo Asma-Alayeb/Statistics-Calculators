@@ -263,7 +263,7 @@ if (typeof p2 === "number" && !isNaN(p2) && p2 !== null) {
 
         var p_combined = (x1 + x2) / (n1 + n2);
         var standardError = Math.sqrt(p_combined * (1 - p_combined) * ((1 / n1) + (1 / n2)));
-        var testStatistic = (x1/n1- x2/n1) / standardError;
+        var testStatistic = (x1*(1/n1)- x2*(1/n2)) / standardError;
 
         var criticalValueLower, criticalValueUpper, pValue;
         if (testType === "left") {
