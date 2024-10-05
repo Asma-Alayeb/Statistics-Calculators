@@ -280,6 +280,7 @@
 
         document.getElementById("pooled_estimate_result").innerHTML = "Pooled Estimate: " + p_combined.toFixed(5);
         document.getElementById("test_statistic_result").innerHTML = "Test Statistic: " + testStatistic.toFixed(5);
+        document.getElementById("standard_error_result").innerHTML = "Standard Error: " + standardError.toFixed(5);
         if (testType === "two") {
             document.getElementById("critical_values_result").innerHTML = "Critical Values: [" + criticalValueLower.toFixed(5) + ", " + criticalValueUpper.toFixed(5) + "]";
         } else {
