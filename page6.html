@@ -258,7 +258,7 @@ var pooledVar=(Math.pow(stddev1,2)*(n1-1)+Math.pow(stddev2,2)*(n2-1))/(n1+n2-2);
 
        // var zValue = jStat.normal.inv(1 - (1 - confidenceLevel) / 2, 0, 1); // Z-critical value for given confidence level
         //I added this (10/07/24)
-       var tValue = parseFloat(jStat.studentt.inv(1 - (1 - confidenceLevel) / 2, df).toFixed(6));
+       var tValue = jStat.studentt.inv(1 - (1 - confidenceLevel) / 2, df).toFixed(6);
 
 
         var marginOfError = tValue * stdError;
