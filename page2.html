@@ -184,7 +184,14 @@
         lowerBound = parseFloat(lowerBound.toFixed(4));
         upperBound = parseFloat(upperBound.toFixed(4));
 
-        document.getElementById("ci_confidence_interval_result").innerHTML = "The confidence interval is [" + lowerBound + ", " + upperBound + "]";
+        document.getElementById("ci_confidence_interval_result").innerHTML = `
+    Lower Bound: ${lowerBound.toFixed(4)}<br>
+    Upper Bound: ${upperBound.toFixed(4)}<br>
+    Confidence Interval: ${p_hat} ± ${marginOfError.toFixed(4)}<br>
+   " Confidence Interval: [" + lowerBound + ", " + upperBound + "]"
+`;
+
+       // document.getElementById("ci_confidence_interval_result").innerHTML = "The confidence interval is 
     }
 
     function calculateSampleSize() {
