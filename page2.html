@@ -186,9 +186,12 @@
 
         document.getElementById("ci_confidence_interval_result").innerHTML = `
     Lower Bound: ${lowerBound.toFixed(4)}<br>
+    <br>
     Upper Bound: ${upperBound.toFixed(4)}<br>
+    <br>
     Confidence Interval: ${p_hat} ± ${marginOfError.toFixed(4)}<br>
-   " Confidence Interval: [" + lowerBound + ", " + upperBound + "]"
+    <br>
+   Confidence Interval: [${lowerBound.toFixed(4)}, ${upperBound.toFixed(4)}]
 `;
 
        // document.getElementById("ci_confidence_interval_result").innerHTML = "The confidence interval is 
