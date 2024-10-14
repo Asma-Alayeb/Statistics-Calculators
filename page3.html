@@ -206,12 +206,12 @@
                 }
 
                 // Display results
-                document.getElementById("test_statistic_result").innerHTML = "Test Statistic: " + testStatistic.toFixed(4);
+                document.getElementById("test_statistic_result").innerHTML = "Test Statistic ( t value): " + testStatistic.toFixed(4);
                 document.getElementById("p_value_result").innerHTML = "P-value: " + pValue.toFixed(4);
                 if (testType === "two") {
-                    document.getElementById("critical_values_result").innerHTML = "Critical Values: [" + criticalValueLower.toFixed(4) + ", " + criticalValueUpper.toFixed(4) + "]";
+                    document.getElementById("critical_values_result").innerHTML = "Critical Values (t critical): [" + criticalValueLower.toFixed(4) + ", " + criticalValueUpper.toFixed(4) + "]";
                 } else {
-                    document.getElementById("critical_values_result").innerHTML = "Critical Value: " + (testType === "left" ? criticalValueLower.toFixed(4) : criticalValueUpper.toFixed(4));
+                    document.getElementById("critical_values_result").innerHTML = "Critical Value (t critical): " + (testType === "left" ? criticalValueLower.toFixed(4) : criticalValueUpper.toFixed(4));
                 }
             } catch (e) {
                 console.error("Error in performing the hypothesis test:", e);
