@@ -354,9 +354,13 @@ if (typeof p2 === "number" && !isNaN(p2) && p2 !== null) {
         var upperBound = (p1 - p2) + marginOfError;
 
         // Display the results
-        document.getElementById("ci_result").innerHTML = `Confidence Interval: (${lowerBound.toFixed(5)}, ${upperBound.toFixed(5)})<br>
-        Confidence Interval: ${(p1-p2} ± ${marginOfError.toFixed(4)}`;
-        document.getElementById("margin_error_result").innerHTML = `Margin of Error: ${marginOfError.toFixed(5)}`;
+      document.getElementById("ci_result").innerHTML = `
+    Confidence Interval: (${lowerBound.toFixed(5)}, ${upperBound.toFixed(5)})<br>
+    <br>
+    Confidence Interval: ${(p1 - p2).toFixed(5)} ± ${marginOfError.toFixed(4)}
+`;
+document.getElementById("margin_error_result").innerHTML = `Margin of Error: ${marginOfError.toFixed(5)}`;
+
     }
 
     function getZValueForConfidenceLevel(confidenceLevel) {
