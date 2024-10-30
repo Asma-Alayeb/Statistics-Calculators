@@ -181,8 +181,8 @@
 
         var lowerBound = p_hat - marginOfError;
         var upperBound = p_hat + marginOfError;
-        lowerBound = parseFloat(lowerBound.toFixed(4));
-        upperBound = parseFloat(upperBound.toFixed(4));
+        lowerBound = parseFloat(lowerBound.toFixed(6));
+        upperBound = parseFloat(upperBound.toFixed(6));
 
         document.getElementById("ci_confidence_interval_result").innerHTML = `
     Lower Bound: ${lowerBound.toFixed(6)}<br>
